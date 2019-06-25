@@ -1,0 +1,22 @@
+{
+  "name": "rpt12-mvp",
+  "version": "1.0.0",
+  "description": "Lookmark - Get a preview of your links before visiting them",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vvek87/rpt12-mvp.git"
+  },
+  "author": "Vivek Patel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vvek87/rpt12-mvp/issues"
+  },
+  "homepage": "https://github.com/vvek87/rpt12-mvp#readme"
+}
