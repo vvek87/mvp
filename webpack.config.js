@@ -1,5 +1,6 @@
 module.exports = {
   entry: __dirname + '/client/app.jsx',
+
   module: {
     rules: [
       {
@@ -12,19 +13,11 @@ module.exports = {
           }
         }
       },
-      {
-        test: /\.(png|jpe?g)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {},
-          },
-        ],
-      },
     ]
   },
     output: {
     filename: 'bundle.js',
     path: __dirname + '/public'
-  }
+  },
+  plugins: ["babel-plugin-styled-components"]
 };

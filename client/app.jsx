@@ -2,60 +2,93 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import $ from 'jquery';
+import styled from 'styled-components';
 
 import SubmitLink from './components/submitLink.jsx';
+
+const MainWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 1280px;
+  background-color: 'grey';
+`;
+
+const Submit = styled.div`
+  margin: 20px;
+`;
+
+const Tile = styled.div`
+  margin: 8px;
+`;
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      links: ['ign']
+      links: []
     };
 
+    this.submitLink = this.submitLink.bind(this);
   }
 
-  componentDidMount() {
-    $.ajax({
-      url: '/test',
-      method: 'GET',
-      success: (bookmarkData) => {
-        let updateSites = this.state.links;
 
-        for (var i = 0; i < bookmarkData.length; i++) {
-          if (updateSites.includes(bookmarkData[i])) {
-            bookmarkData.splice(i, 1)
-          }
-        }
-
-        updateSites.push(bookmarkData);
-        console.log('success get request in app.jsx');
-        this.setState({
-          links: updateSites
-        });
-      },
-      error: (err) => { console.log('get reviews error: ', err); }
-    });
+  submitLink(event) {
+    if (!this.state.links.includes(event.newLink)) {
+      var link = event
+      $.ajax({
+        url: "/submit",
+        method: "POST",
+        data: link,
+        "Content-Type": "application/json",
+        success: (newLink) => {
+          var allLinks = this.state.links;
+            allLinks.push(newLink);
+            this.setState({
+              links: allLinks
+            })
+        },
+        error: (err) => { console.log('create bookmark error: ', err); }
+      });
+    } else {
+      alert(event.newLink + ' is already saved');
+    }
   }
 
   render() {
-    console.log('this.sate.length: ', this.state.links)
     if (this.state.links.length) {
       return (
-        <div>
-          <SubmitLink />
-          {this.state.links.map((site, i) => {
-            return <div>
-              <a href={"https://www." + site + ".com"}>
-                <img src={require("../public/images/" + site + ".png")} target="blank" />
-              </a>
-            </div>
-          })}
-        </div>
+        <MainWrap>
+          <Submit>
+            <SubmitLink submitLink={this.submitLink.bind(this)}/>
+          </Submit>
+          <Wrapper>
+            {this.state.links.map((site, i) => {
+              return <Tile key={i}>
+                <a href={"https://www." + site.split('.')[0] + "." + site.split('.')[1]} target="_blank">
+                  <img src={'images/' + site.split('.')[0] + '.png'} style={{height:"200px", width:"300px"}} title={site}/>
+                </a>
+              </Tile>
+            })}
+          </Wrapper>
+        </MainWrap>
       )
     } else {
       return (
-        <div>Loading...</div>
+        <MainWrap>
+          <Submit>
+            <SubmitLink submitLink={this.submitLink.bind(this)}/>
+          </Submit>
+        </MainWrap>
       )
     }
   }
