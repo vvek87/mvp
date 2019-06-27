@@ -4,7 +4,10 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import styled from 'styled-components';
 
+import Dragula from 'react-dragula';
+
 import SubmitLink from './components/submitLink.jsx';
+
 
 const MainWrap = styled.div`
   display: flex;
@@ -27,7 +30,37 @@ const Submit = styled.div`
 
 const Tile = styled.div`
   margin: 8px;
+  position: relative;
 `;
+
+const SiteName = styled.div`
+  position: absolute;
+  border-radius: 3px;
+  bottom: 4px;
+  right: 0px;
+  width: auto;
+  height: 16px;
+  font-family: verdana, arial, "Times New Roman";
+  font-size: 14px;
+  background-color: #ede92d;
+  background-image: linear-gradient(#ede92d, #fffdaa);
+  color: #07162c;
+`;
+
+const Delete = styled.input`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+
+  :hover {
+    width: 35px;
+    height: 35px;
+  }
+`;
+
 
 
 class App extends React.Component {
@@ -35,14 +68,15 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      links: []
+      links: [],
     };
 
-    this.submitLink = this.submitLink.bind(this);
+    this.subLink = this.subLink.bind(this);
   }
 
 
-  submitLink(event) {
+  subLink(event) {
+    enterLink.value = '';
     if (!this.state.links.includes(event.newLink)) {
       var link = event
       $.ajax({
@@ -64,19 +98,44 @@ class App extends React.Component {
     }
   }
 
+  deleteLink(siteName) {
+    let newSiteList = this.state.links;
+    for (var i = 0; i < newSiteList.length; i++) {
+      if (newSiteList[i] === siteName) {
+        newSiteList.splice(i, 1);
+      }
+    }
+    this.setState({
+      links: newSiteList
+    })
+  }
+
+
+
+  dragulaDecorator(componentBackingInstance) {
+    if (componentBackingInstance) {
+      let options = { };
+      Dragula([componentBackingInstance], options);
+    }
+  };
+
+
   render() {
+    let num = 0;
     if (this.state.links.length) {
       return (
         <MainWrap>
           <Submit>
-            <SubmitLink submitLink={this.submitLink.bind(this)}/>
+            <SubmitLink subLink={this.subLink.bind(this)} numOfLinks={this.state.links.length} />
           </Submit>
-          <Wrapper>
+          <Wrapper className='container' ref={this.dragulaDecorator}>
             {this.state.links.map((site, i) => {
               return <Tile key={i}>
                 <a href={"https://www." + site.split('.')[0] + "." + site.split('.')[1]} target="_blank">
                   <img src={'images/' + site.split('.')[0] + '.png'} style={{height:"200px", width:"300px"}} title={site}/>
+                  <SiteName>{site}</SiteName>
                 </a>
+                <Delete type="image" id={site} src="xbutton.png" title="Remove" onClick={() => {this.deleteLink(site)}}></Delete>
               </Tile>
             })}
           </Wrapper>
@@ -86,7 +145,7 @@ class App extends React.Component {
       return (
         <MainWrap>
           <Submit>
-            <SubmitLink submitLink={this.submitLink.bind(this)}/>
+            <SubmitLink subLink={this.subLink.bind(this)} numOfLinks={this.state.links.length}/>
           </Submit>
         </MainWrap>
       )

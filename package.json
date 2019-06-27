@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/vvek87/rpt12-mvp#readme",
   "dependencies": {
+    "dragula": "^3.7.2",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "jquery": "^3.4.1",
@@ -30,6 +31,7 @@
     "puppeteer": "^1.18.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-dragula": "^1.1.17",
     "styled-components": "^4.3.2",
     "webshot": "^0.18.0"
   },
