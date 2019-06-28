@@ -46,7 +46,7 @@ export default class SubmitLink extends React.Component {
         <Text>
           Enter a website
         </Text>
-        <input type="text" id="enterLink" placeholder="example.com"></input>
+        <input type="text" id="enterLink" placeholder="example.com" size="40" onKeyPress={() => {if (event.keyCode === 13){this.props.subLink({newLink: enterLink.value})}}}></input>
         <Button type="submit" onClick={() => {this.props.subLink({newLink: enterLink.value})}}>Submit</Button>
         <CountLinks>Bookmarks: {this.props.numOfLinks}</CountLinks>
       </div>

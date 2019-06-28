@@ -5,6 +5,7 @@ import $ from 'jquery';
 import styled from 'styled-components';
 
 import Dragula from 'react-dragula';
+import hash from 'string-hash';
 
 import SubmitLink from './components/submitLink.jsx';
 
@@ -39,7 +40,9 @@ const SiteName = styled.div`
   bottom: 4px;
   right: 0px;
   width: auto;
+  max-width: 299;
   height: 16px;
+  overflow: hidden;
   font-family: verdana, arial, "Times New Roman";
   font-size: 14px;
   background-color: #ede92d;
@@ -77,7 +80,7 @@ class App extends React.Component {
 
   subLink(event) {
     enterLink.value = '';
-    if (!this.state.links.includes(event.newLink)) {
+    if (!this.state.links.includes(event.newLink && 'https://'.concat(event.newLink))) {
       var link = event
       $.ajax({
         url: "/submit",
@@ -121,7 +124,6 @@ class App extends React.Component {
 
 
   render() {
-    let num = 0;
     if (this.state.links.length) {
       return (
         <MainWrap>
@@ -131,8 +133,8 @@ class App extends React.Component {
           <Wrapper className='container' ref={this.dragulaDecorator}>
             {this.state.links.map((site, i) => {
               return <Tile key={i}>
-                <a href={"https://www." + site.split('.')[0] + "." + site.split('.')[1]} target="_blank">
-                  <img src={'images/' + site.split('.')[0] + '.png'} style={{height:"200px", width:"300px"}} title={site}/>
+                <a href={site} target="_blank">
+                  <img src={'images/' + hash(site) + '.png'} style={{height:"200px", width:"300px"}} title={site}/>
                   <SiteName>{site}</SiteName>
                 </a>
                 <Delete type="image" id={site} src="xbutton.png" title="Remove" onClick={() => {this.deleteLink(site)}}></Delete>
