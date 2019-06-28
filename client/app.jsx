@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import Dragula from 'react-dragula';
 import hash from 'string-hash';
+import Popup from "reactjs-popup";
 
 import SubmitLink from './components/submitLink.jsx';
 
@@ -34,21 +35,21 @@ const Tile = styled.div`
   position: relative;
 `;
 
-const SiteName = styled.div`
-  position: absolute;
-  border-radius: 3px;
-  bottom: 4px;
-  right: 0px;
-  width: auto;
-  max-width: 299;
-  height: 16px;
-  overflow: hidden;
-  font-family: verdana, arial, "Times New Roman";
-  font-size: 14px;
-  background-color: #ede92d;
-  background-image: linear-gradient(#ede92d, #fffdaa);
-  color: #07162c;
-`;
+// const SiteName = styled.div`
+//   position: absolute;
+//   border-radius: 3px;
+//   bottom: 4px;
+//   right: 0px;
+//   width: auto;
+//   max-width: 299;
+//   height: 16px;
+//   overflow: hidden;
+//   font-family: verdana, arial, "Times New Roman";
+//   font-size: 14px;
+//   background-color: #ede92d;
+//   background-image: linear-gradient(#ede92d, #fffdaa);
+//   color: #07162c;
+// `;
 
 const Delete = styled.input`
   position: absolute;
@@ -62,6 +63,24 @@ const Delete = styled.input`
     width: 35px;
     height: 35px;
   }
+`;
+
+const TypeLabel = styled.input`
+position: absolute;
+border-radius: 3px;
+border: none;
+bottom: 4px;
+right: 0px;
+width: 100%;
+// max-width: 300;
+text-align: center;
+height: 16px;
+overflow: hidden;
+font-family: verdana, arial, "Times New Roman";
+font-size: 14px;
+background-color: #ede92d;
+background-image: linear-gradient(#ede92d, #fffdaa);
+color: #07162c;
 `;
 
 
@@ -79,13 +98,22 @@ class App extends React.Component {
 
 
   subLink(event) {
+    console.log('EVENT---', event)
     enterLink.value = '';
-    if (!this.state.links.includes(event.newLink && 'https://'.concat(event.newLink))) {
-      var link = event
+    let inputLink = event.newLink;
+    if (inputLink.includes('//')) {
+      inputLink = inputLink.split('//');
+     inputLink = 'https://'.concat(inputLink[1])
+    } else {
+      inputLink = 'https://'.concat(inputLink)
+    }
+    console.log('INPUTLINK---', inputLink);
+    if (!this.state.links.includes(inputLink)) {
+      // var link = event
       $.ajax({
         url: "/submit",
         method: "POST",
-        data: link,
+        data: {newLink: inputLink},
         "Content-Type": "application/json",
         success: (newLink) => {
           var allLinks = this.state.links;
@@ -97,7 +125,7 @@ class App extends React.Component {
         error: (err) => { console.log('create bookmark error: ', err); }
       });
     } else {
-      alert(event.newLink + ' is already saved');
+      alert('That link is already saved');
     }
   }
 
@@ -113,6 +141,24 @@ class App extends React.Component {
     })
   }
 
+  // PopupExample = () => (
+  //   <Popup placeholder="Change label" trigger={<input></input>} position="right center">
+  //     <div>Popup content here !!</div>
+  //   </Popup>
+  // );
+
+  changeLabel(event) {
+    let linkLabel = event.currentTarget.textContent
+    console.log('TEST CHANGE LABEL EVENT: ', linkLabel)
+
+    event.currentTarget.textContent = 'THISWORKS'
+
+    // PopupExample()
+
+  }
+
+
+
 
 
   dragulaDecorator(componentBackingInstance) {
@@ -124,6 +170,7 @@ class App extends React.Component {
 
 
   render() {
+    console.log('LINKS---', this.state.links)
     if (this.state.links.length) {
       return (
         <MainWrap>
@@ -135,8 +182,12 @@ class App extends React.Component {
               return <Tile key={i}>
                 <a href={site} target="_blank">
                   <img src={'images/' + hash(site) + '.png'} style={{height:"200px", width:"300px"}} title={site}/>
-                  <SiteName>{site}</SiteName>
                 </a>
+                <TypeLabel placeholder={site}></TypeLabel>
+                {/* <SiteName onClick={this.changeLabel}>
+                  {site}
+
+                </SiteName> */}
                 <Delete type="image" id={site} src="xbutton.png" title="Remove" onClick={() => {this.deleteLink(site)}}></Delete>
               </Tile>
             })}

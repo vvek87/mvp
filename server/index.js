@@ -25,39 +25,22 @@ app.get('/', (req, res) => {
 
 app.post('/submit', (req, res) => {
   let checkedLink = req.body.newLink;
+  console.log('CHECK LINK---', checkedLink)
     if (!checkedLink.includes('//')) {
       checkedLink = 'https://'.concat(checkedLink);
     }
 
   let renderStream = webshot(req.body.newLink)
-  let writeSite = fs.createWriteStream(path.join(__dirname, '../public/images/' + hash(checkedLink) + '.png'));
+  let writeSite = fs.createWriteStream(path.join(__dirname, '../public/images/' + hash(req.body.newLink) + '.png'));
 
   renderStream.on('data', (chunk) => {
     writeSite.write(chunk.toString('binary'), 'binary');
   });
 
   renderStream.on('end', () => {
-    // let checkedLink = req.body.newLink;
-    // if (!checkedLink.includes('//')) {
-    //   checkedLink = 'https://'.concat(checkedLink);
-    // }
-    res.send(checkedLink);
+    res.send(req.body.newLink);
   })
 });
-
-// app.delete('/delete', (req, res) => {
-//   let pathToFile = path.join(__dirname, '../public/images/' + req.body.fileName + '.png');
-//   console.log('PATH TO FILE DELETE---', pathToFile)
-
-//   del([pathToFile], function(err, deleted) {
-//     if (err) throw err;
-//     // deleted files
-//     console.log('file that was deleted---', deleted);
-//     res.send(200)
-//   });
-
-
-// });
 
 
 app.listen(port, () => {
