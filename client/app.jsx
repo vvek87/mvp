@@ -98,18 +98,16 @@ class App extends React.Component {
 
 
   subLink(event) {
-    console.log('EVENT---', event)
     enterLink.value = '';
     let inputLink = event.newLink;
+
     if (inputLink.includes('//')) {
       inputLink = inputLink.split('//');
-     inputLink = 'https://'.concat(inputLink[1])
+      inputLink = 'https://'.concat(inputLink[1]);
     } else {
       inputLink = 'https://'.concat(inputLink)
     }
-    console.log('INPUTLINK---', inputLink);
     if (!this.state.links.includes(inputLink)) {
-      // var link = event
       $.ajax({
         url: "/submit",
         method: "POST",
@@ -141,12 +139,6 @@ class App extends React.Component {
     })
   }
 
-  // PopupExample = () => (
-  //   <Popup placeholder="Change label" trigger={<input></input>} position="right center">
-  //     <div>Popup content here !!</div>
-  //   </Popup>
-  // );
-
   changeLabel(event) {
     let linkLabel = event.currentTarget.textContent
     console.log('TEST CHANGE LABEL EVENT: ', linkLabel)
@@ -170,7 +162,6 @@ class App extends React.Component {
 
 
   render() {
-    console.log('LINKS---', this.state.links)
     if (this.state.links.length) {
       return (
         <MainWrap>
@@ -184,10 +175,6 @@ class App extends React.Component {
                   <img src={'images/' + hash(site) + '.png'} style={{height:"200px", width:"300px"}} title={site}/>
                 </a>
                 <TypeLabel placeholder={site}></TypeLabel>
-                {/* <SiteName onClick={this.changeLabel}>
-                  {site}
-
-                </SiteName> */}
                 <Delete type="image" id={site} src="xbutton.png" title="Remove" onClick={() => {this.deleteLink(site)}}></Delete>
               </Tile>
             })}

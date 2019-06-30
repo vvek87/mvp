@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.post('/submit', (req, res) => {
   let checkedLink = req.body.newLink;
-  console.log('CHECK LINK---', checkedLink)
+
     if (!checkedLink.includes('//')) {
       checkedLink = 'https://'.concat(checkedLink);
     }
