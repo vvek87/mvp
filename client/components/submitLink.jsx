@@ -2,7 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-
 const Button = styled.button`
   border: 1px solid black;
   border-radius : 6px;
@@ -31,7 +30,6 @@ const CountLinks = styled.div`
   margin-left: 200px;
 `;
 
-
 export default class SubmitLink extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +42,7 @@ export default class SubmitLink extends React.Component {
     return (
       <div>
         <Text>
-          Enter a website
+          Save a website
         </Text>
         <input type="text" id="enterLink" placeholder="example.com" size="40" onKeyPress={() => {if (event.keyCode === 13){this.props.subLink({newLink: enterLink.value})}}}></input>
         <Button type="submit" onClick={() => {this.props.subLink({newLink: enterLink.value})}}>Submit</Button>

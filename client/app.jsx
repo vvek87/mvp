@@ -3,13 +3,10 @@ import ReactDOM from 'react-dom';
 
 import $ from 'jquery';
 import styled from 'styled-components';
-
 import Dragula from 'react-dragula';
 import hash from 'string-hash';
-import Popup from "reactjs-popup";
 
 import SubmitLink from './components/submitLink.jsx';
-
 
 const MainWrap = styled.div`
   display: flex;
@@ -35,22 +32,6 @@ const Tile = styled.div`
   position: relative;
 `;
 
-// const SiteName = styled.div`
-//   position: absolute;
-//   border-radius: 3px;
-//   bottom: 4px;
-//   right: 0px;
-//   width: auto;
-//   max-width: 299;
-//   height: 16px;
-//   overflow: hidden;
-//   font-family: verdana, arial, "Times New Roman";
-//   font-size: 14px;
-//   background-color: #ede92d;
-//   background-image: linear-gradient(#ede92d, #fffdaa);
-//   color: #07162c;
-// `;
-
 const Delete = styled.input`
   position: absolute;
   top: 0px;
@@ -66,24 +47,21 @@ const Delete = styled.input`
 `;
 
 const TypeLabel = styled.input`
-position: absolute;
-border-radius: 3px;
-border: none;
-bottom: 4px;
-right: 0px;
-width: 100%;
-// max-width: 300;
-text-align: center;
-height: 16px;
-overflow: hidden;
-font-family: verdana, arial, "Times New Roman";
-font-size: 14px;
-background-color: #ede92d;
-background-image: linear-gradient(#ede92d, #fffdaa);
-color: #07162c;
+  position: absolute;
+  border-radius: 3px;
+  border: none;
+  bottom: 4px;
+  right: 0px;
+  width: 100%;
+  text-align: center;
+  height: 16px;
+  overflow: hidden;
+  font-family: verdana, arial, "Times New Roman";
+  font-size: 14px;
+  background-color: #ede92d;
+  background-image: linear-gradient(#ede92d, #fffdaa);
+  color: #07162c;
 `;
-
-
 
 class App extends React.Component {
   constructor(props) {
@@ -96,7 +74,6 @@ class App extends React.Component {
     this.subLink = this.subLink.bind(this);
   }
 
-
   subLink(event) {
     enterLink.value = '';
     let inputLink = event.newLink;
@@ -107,6 +84,7 @@ class App extends React.Component {
     } else {
       inputLink = 'https://'.concat(inputLink)
     }
+
     if (!this.state.links.includes(inputLink)) {
       $.ajax({
         url: "/submit",
@@ -139,27 +117,12 @@ class App extends React.Component {
     })
   }
 
-  changeLabel(event) {
-    let linkLabel = event.currentTarget.textContent
-    console.log('TEST CHANGE LABEL EVENT: ', linkLabel)
-
-    event.currentTarget.textContent = 'THISWORKS'
-
-    // PopupExample()
-
-  }
-
-
-
-
-
   dragulaDecorator(componentBackingInstance) {
     if (componentBackingInstance) {
       let options = { };
       Dragula([componentBackingInstance], options);
     }
   };
-
 
   render() {
     if (this.state.links.length) {
