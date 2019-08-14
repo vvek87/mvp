@@ -19,5 +19,4 @@ module.exports = {
     filename: 'bundle.js',
     path: __dirname + '/public'
   },
-  // plugins: ["babel-plugin-styled-components"]
 };
