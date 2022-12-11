@@ -23,7 +23,7 @@
   "homepage": "https://github.com/vvek87/rpt12-mvp#readme",
   "dependencies": {
     "dragula": "^3.7.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fs": "0.0.1-security",
     "jquery": "^3.4.1",
     "mongodb": "^3.2.7",
